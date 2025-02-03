@@ -15,9 +15,5 @@ spec:
       containers:
         - name: register-app:1.0.0-15
           image: sihasaneshubham/register-app:1.0.0-15
-          resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
           ports:
             - containerPort: 8080
