@@ -6,7 +6,7 @@ pipeline {
     environment {
         APP_NAME = "register-app"
     }
-    
+
     stages {
         stage('Clean Workspace') {
             steps {
@@ -14,7 +14,9 @@ pipeline {
             }
         }
         stage('Git Checkout'){
-             git branch: 'main', credentialsId: 'GitHub-Credentials', url: 'https://github.com/shubham-sihasane/gitops-register-app.git'
+             steps {
+                git branch: 'main', credentialsId: 'GitHub-Credentials', url: 'https://github.com/shubham-sihasane/gitops-register-app.git'
+             }
         }
         stage('Update Deployment Tags'){
             steps {
