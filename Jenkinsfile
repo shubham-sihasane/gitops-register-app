@@ -1,23 +1,21 @@
 pipeline {
-    agent { label "Jenkins-Agent" }
-    environment {
-              APP_NAME = "register-app-pipeline"
+    agent {
+        label 'Jenkins-Agent-1'
     }
 
+    environment {
+        APP_NAME = "register-app"
+    }
     stages {
-        stage("Cleanup Workspace") {
+        stage('Clean Workspace') {
             steps {
                 cleanWs()
             }
         }
-
-        stage("Checkout from SCM") {
-               steps {
-                   git branch: 'main', credentialsId: 'github', url: 'https://github.com/Ashfaque-9x/gitops-register-app'
-               }
+        stage('Git Checkout'){
+             git branch: 'main', credentialsId: 'GitHub-Credentials', url: 'https://github.com/shubham-sihasane/gitops-register-app.git'
         }
-
-        stage("Update the Deployment Tags") {
+        stage('Update Deployment Tags'){
             steps {
                 sh """
                    cat deployment.yaml
@@ -26,20 +24,18 @@ pipeline {
                 """
             }
         }
-
         stage("Push the changed deployment file to Git") {
             steps {
                 sh """
-                   git config --global user.name "Ashfaque-9x"
-                   git config --global user.email "ashfaque.s510@gmail.com"
+                   git config --global user.name "Shubham Sihasane"
+                   git config --global user.email "shubhamsihasane101@gmail.com"
                    git add deployment.yaml
                    git commit -m "Updated Deployment Manifest"
                 """
-                withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
-                  sh "git push https://github.com/Ashfaque-9x/gitops-register-app main"
+                withCredentials([gitUsernamePassword(credentialsId: 'GitHub-Credentials', gitToolName: 'Default')]) {
+                  sh "git push https://github.com/shubham-sihasane/gitops-register-app.git main"
                 }
             }
         }
-      
     }
 }
